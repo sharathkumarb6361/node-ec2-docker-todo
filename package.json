@@ -1,7 +1,8 @@
 {
   "name": "taskpulse-todo-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "TaskPulse - Modern Node.js Express ToDo Web Application with Docker & AWS EC2 Automated Deployment",
+
 
   "main": "server.js",
   "scripts": {
