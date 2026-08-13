@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TaskPulse - Interactive ToDo Web Application">
+  <title>TaskPulse | Modern ToDo Web Application</title>
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon">
+          <i class="fa-solid fa-square-check"></i>
+        </div>
+        <div class="logo-text">
+          <h1>TaskPulse <span class="badge-devops">ToDo App</span></h1>
+          <p>Smart Task Management Dashboard</p>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span class="status-text">Server Status: <strong id="server-status">Connecting...</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    
+    <!-- Hero / Metrics Section -->
+    <section class="dashboard-metrics">
+      <div class="metric-card glass-card">
+        <div class="metric-icon total">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div class="metric-info">
+          <span class="metric-label">Total ToDos</span>
+          <h3 id="stat-total">0</h3>
+        </div>
+      </div>
+
+      <div class="metric-card glass-card">
+        <div class="metric-icon progress">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="metric-info">
+          <span class="metric-label">Active / Pending</span>
+          <h3 id="stat-active">0</h3>
+        </div>
+      </div>
+
+      <div class="metric-card glass-card">
+        <div class="metric-icon completed">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="metric-info">
+          <span class="metric-label">Completed</span>
+          <h3 id="stat-completed">0</h3>
+        </div>
+      </div>
+
+      <div class="metric-card glass-card">
+        <div class="metric-icon rate">
+          <i class="fa-solid fa-chart-pie"></i>
+        </div>
+        <div class="metric-info">
+          <span class="metric-label">Progress Rate</span>
+          <h3 id="stat-rate">0%</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Add ToDo Box -->
+    <section class="quick-add-section glass-card">
+      <h2><i class="fa-solid fa-bolt"></i> Quick Add ToDo Task</h2>
+      <form id="quick-add-form" class="quick-add-form">
+        <div class="input-with-icon">
+          <i class="fa-solid fa-plus input-icon"></i>
+          <input type="text" id="quick-title" placeholder="What needs to be done today?" required autocomplete="off">
+        </div>
+
+        <select id="quick-category" class="select-input">
+          <option value="Work">💼 Work</option>
+          <option value="Personal">🏠 Personal</option>
+          <option value="General" selected>📌 General</option>
+        </select>
+
+        <input type="date" id="quick-due-date" class="date-input">
+
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-plus-circle"></i> Add Task
+        </button>
+      </form>
+    </section>
+
+    <!-- Filter Tabs & Search Bar -->
+    <section class="action-bar glass-card">
+      <div class="tabs-group">
+        <button class="tab-btn active" data-tab="all">
+          <i class="fa-solid fa-list"></i> All ToDos (<span id="tab-count-all">0</span>)
+        </button>
+        <button class="tab-btn" data-tab="active">
+          <i class="fa-solid fa-circle-notch"></i> Active (<span id="tab-count-active">0</span>)
+        </button>
+        <button class="tab-btn" data-tab="completed">
+          <i class="fa-solid fa-circle-check"></i> Completed (<span id="tab-count-completed">0</span>)
+        </button>
+      </div>
+
+      <div class="search-filter-group">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="search-input" placeholder="Search tasks..." autocomplete="off">
+        </div>
+        
+        <div class="filter-box">
+          <select id="category-filter">
+            <option value="All">All Categories</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+
+        <div class="filter-box">
+          <select id="priority-filter">
+            <option value="All">All Priorities</option>
+            <option value="High">🔥 High</option>
+            <option value="Medium">⚡ Medium</option>
+            <option value="Low">☕ Low</option>
+          </select>
+        </div>
+
+        <button id="btn-open-create-modal" class="btn btn-secondary" title="Advanced Options">
+          <i class="fa-solid fa-sliders"></i> Full Form
+        </button>
+
+        <button id="btn-clear-completed" class="btn btn-secondary" style="border-color: rgba(244, 63, 94, 0.4); color: var(--accent-rose);" title="Clear all completed tasks">
+          <i class="fa-solid fa-trash-can"></i> Clear Completed
+        </button>
+
+        <button id="btn-export-todos" class="btn btn-secondary" style="border-color: rgba(6, 182, 212, 0.4); color: var(--accent-cyan);" title="Export tasks to JSON backup file">
+          <i class="fa-solid fa-file-export"></i> Export JSON
+        </button>
+      </div>
+    </section>
+
+    <!-- ToDo List Cards Grid -->
+    <section class="items-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-list-ul"></i> My Tasks</h2>
+        <button id="btn-refresh" class="btn-icon" title="Refresh List">
+          <i class="fa-solid fa-arrows-rotate"></i>
+        </button>
+      </div>
+
+      <div id="items-grid" class="items-grid">
+        <!-- Rendered dynamically via JS -->
+        <div class="loading-spinner">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+          <p>Loading ToDos from API...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for Create / Edit ToDo -->
+  <div id="item-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 id="modal-title"><i class="fa-solid fa-square-plus"></i> Add New Task</h3>
+        <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+      </div>
+
+      <form id="item-form">
+        <input type="hidden" id="item-id">
+        
+        <div class="form-group">
+          <label for="item-title">Task Title <span class="required">*</span></label>
+          <input type="text" id="item-title" placeholder="e.g. Prepare weekly report" required>
+        </div>
+
+        <div class="form-group">
+          <label for="item-description">Description & Notes</label>
+          <textarea id="item-description" rows="3" placeholder="Add additional details, links, or notes..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="item-category">Category</label>
+            <select id="item-category">
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="General" selected>General</option>
+            </select>
+          </div>
+
+          <div class="form-group col">
+            <label for="item-due-date">Due Date</label>
+            <input type="date" id="item-due-date">
+          </div>
+
+          <div class="form-group col">
+            <label for="item-priority">Priority</label>
+            <select id="item-priority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-modal" class="btn btn-secondary">Cancel</button>
+          <button type="submit" id="btn-save-item" class="btn btn-primary">
+            <i class="fa-solid fa-floppy-disk"></i> Save ToDo
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>⚡ <strong>TaskPulse ToDo Web Application</strong> | Built with Node.js & Express</p>
+  </footer>
+
+  <!-- Client Script -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
